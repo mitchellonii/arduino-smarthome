@@ -1,0 +1,19 @@
+{
+  "name": "client-middleware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js | pino-pretty -L debug"
+  },
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "serialport": "11.0.0",
+    "pino": "8.14.1",
+    "pino-pretty": "10.0.0",
+    "uuid": "9.0.0"
+  }
+}
