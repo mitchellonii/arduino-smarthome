@@ -53,6 +53,8 @@ export default function App() {
 
 
 function StatsDisplay({ data }) {
+
+
   var d;
   try {
     var d = JSON.parse(data)

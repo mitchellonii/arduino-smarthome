@@ -4,12 +4,13 @@
 #define greenLED 12
 #define redLED 13
 #define yellowLED 5
-
+#define servoPin 9
 #define buttonA 11
 #define buttonB 10
 #define buttonC 9
 #define buzzerPin A0
-
+#include <Servo.h>
+Servo myServo;
 bool armed = false;
 
 bool motionDet = false;
@@ -19,7 +20,7 @@ void setup() {
   pinMode(redLED, OUTPUT);
   pinMode(greenLED, OUTPUT);
     pinMode(yellowLED, OUTPUT);
-
+    myServo.attach(servoPin, 600, 2400);
     pinMode(buzzerPin, OUTPUT);
   pinMode(lightSensor, INPUT);
   pinMode(motionSensor, INPUT);
@@ -37,10 +38,13 @@ void loop() {
       if(armed){
     digitalWrite(redLED, HIGH);
     digitalWrite(greenLED, LOW);
+    myServo.write(0);
   }
   else{
     digitalWrite(greenLED, HIGH);
     digitalWrite(redLED, LOW);
+        myServo.write(180);
+
   }
   if(analogRead(lightSensor) > 200){
     digitalWrite(yellowLED, HIGH);
@@ -70,14 +74,10 @@ void loop() {
     const char* event = packet["event"];
     const char* id = packet["id"];
 
-    //it saves ~4kb (15%) of storage to use the char type, rather than
-importing the String class and concatenating everything to one line (see
-below)
-    if(!strcmp(event, "handshake")){//strcmp (string compare) returns 0 if
-a char array and a string are equal
+    //it saves ~4kb (15%) of storage to use the char type, rather thanimporting the String class and concatenating everything to one line (seebelow)
+    if(!strcmp(event, "handshake")){//strcmp (string compare) returns 0 if a char array and a string are equal
       Serial.print("{\"event\":\"");
-      Serial.print(event);//it saves 26 bytes to use the event variable,
-rather than having "handshake" as part of the above string
+      Serial.print(event);//it saves 26 bytes to use the event variable, rather than having "handshake" as part of the above string
       Serial.print("\",\"data\":\"success\",\"id\":\"");
       Serial.print(id);
       Serial.println("\"}");
@@ -119,7 +119,18 @@ rather than having "handshake" as part of the above string
 
   if(digitalRead(motionSensor) == 1 && motionDet == false){
     motionDet = true;
-    Serial.println("{\"event\":\"alert\", \"motion\":\"1\"}");
+
+     bool pir = digitalRead(motionSensor);
+      int light = analogRead(lightSensor);
+      Serial.print(
+"{\"event\":\"alert\",\"light\":\"");
+      Serial.print(light);
+      Serial.print("\",\"motion\":\"");
+      Serial.print(pir);
+      Serial.print("\",\"armed\":\"");
+      Serial.print(armed);
+    Serial.print("\"motion\":\"1\"}");
+
     if(armed){
     digitalWrite(buzzerPin, HIGH);
     delay(500);
