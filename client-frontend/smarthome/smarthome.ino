@@ -5,9 +5,7 @@
 #define redLED 13
 #define yellowLED 5
 #define servoPin 9
-#define buttonA 11
-#define buttonB 10
-#define buttonC 9
+
 #define buzzerPin A0
 #include <Servo.h>
 Servo myServo;
@@ -20,20 +18,17 @@ void setup() {
   pinMode(redLED, OUTPUT);
   pinMode(greenLED, OUTPUT);
     pinMode(yellowLED, OUTPUT);
-    myServo.attach(servoPin, 600, 2400);
+    myServo.attach(9, 600, 2400);
     pinMode(buzzerPin, OUTPUT);
   pinMode(lightSensor, INPUT);
   pinMode(motionSensor, INPUT);
-  pinMode(buttonA, INPUT);
-  pinMode(buttonB, INPUT);
-  pinMode(buttonC, INPUT);
+
   while (!Serial) continue;
 
 }
 
 void loop() {
-
-
+  myServo.write(75);
   for(int i = 0; i < 20; i++){
       if(armed){
     digitalWrite(redLED, HIGH);
